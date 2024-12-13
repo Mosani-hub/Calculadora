@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Coleta de Borracha</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #34495e;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input:disabled {
+            background-color: #ecf0f1;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        button:hover {
+            background-color: #219a52;
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .result-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Coleta de Borracha</h1>
+        
+        <form id="calculadoraBorracha" onsubmit="calcular(event)">
+            <div class="form-group">
+                <label for="data">Data da Coleta:</label>
+                <input type="date" id="data" required>
+            </div>
+
+            <div class="form-group">
+                <label for="qtdCaixas">Quantidade de Caixas:</label>
+                <input type="number" id="qtdCaixas" min="1" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pesoBruto">Peso Bruto (kg):</label>
+                <input type="number" id="pesoBruto" min="0" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pesoLiquido">Peso Líquido (kg):</label>
+                <input type="number" id="pesoLiquido" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="valorQuilo">Valor por Quilo (R$):</label>
+                <input type="number" id="valorQuilo" min="0" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label>Porcentagem do Proprietário:</label>
+                <input type="text" value="55%" disabled>
+            </div>
+
+            <div class="form-group">
+                <label>Porcentagem do Parceiro:</label>
+                <input type="text" value="45%" disabled>
+            </div>
+
+            <button type="submit">Calcular</button>
+        </form>
+
+        <div class="results" id="results" style="display: none;">
+            <div class="result-item">
+                <span>Total a Receber do Proprietário:</span>
+                <span class="result-value" id="totalProprietario">R$ 0,00</span>
+            </div>
+            <div class="result-item">
+                <span>Total a Receber do Parceiro:</span>
+                <span class="result-value" id="totalParceiro">R$ 0,00</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calcular(event) {
+            event.preventDefault();
+            
+            const qtdCaixas = parseFloat(document.getElementById('qtdCaixas').value);
+            const pesoBruto = parseFloat(document.getElementById('pesoBruto').value);
+            const valorQuilo = parseFloat(document.getElementById('valorQuilo').value);
+
+            const pesoLiquido = pesoBruto - (qtdCaixas * 2);
+            
+            if (pesoLiquido < 0) {
+                alert('Erro: O peso líquido não pode ser negativo. Verifique os valores inseridos.');
+                return;
+            }
+
+            document.getElementById('pesoLiquido').value = pesoLiquido.toFixed(2);
+
+            const totalProprietario = (pesoLiquido * valorQuilo * 0.55);
+            const totalParceiro = (pesoLiquido * valorQuilo * 0.45);
+
+            document.getElementById('totalProprietario').textContent = 
+                `R$ ${totalProprietario.toFixed(2)}`;
+            document.getElementById('totalParceiro').textContent = 
+                `R$ ${totalParceiro.toFixed(2)}`;
+            
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
